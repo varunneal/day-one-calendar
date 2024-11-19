@@ -1,11 +1,10 @@
 {
   "id": "calendar",
-  "name": "Calendar",
+  "name": "Better Calendar",
   "description": "Calendar view of your daily notes",
-  "version": "1.5.10",
-  "author": "Liam Cain",
-  "authorUrl": "https://github.com/liamcain/",
-  "fundingUrl": "https://www.buymeacoffee.com/liamcain",
-  "isDesktopOnly": false,
+  "version": "2.0",
+  "author": "Varun Neal Srivastava",
+  "authorUrl": "https://github.com/varunneal/",
+  "isDesktopOnly": true,
   "minAppVersion": "0.9.11"
 }

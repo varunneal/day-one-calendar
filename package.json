@@ -1,13 +1,14 @@
 {
-  "name": "calendar",
+  "name": "better-calendar",
   "version": "1.5.10",
   "description": "Calendar view of your daily notes",
-  "author": "liamcain",
+  "author": "varun",
   "main": "main.js",
   "license": "MIT",
   "scripts": {
     "lint": "svelte-check && eslint . --ext .ts",
-    "build": "npm run lint && rollup -c",
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
     "test": "jest --passWithNoTests",
     "test:watch": "yarn test -- --watch"
   },
