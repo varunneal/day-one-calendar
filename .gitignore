@@ -1,6 +1,7 @@
 node_modules/
 package-lock.json
 dist/
+src/.ds_store
 data.json
 main.js
 .vscode/
