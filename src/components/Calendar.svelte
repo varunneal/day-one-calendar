@@ -36,6 +36,20 @@
   export let sources: ICalendarSource[] = [];
   export let selectedId: string;
 
+
+  $: {
+    console.log({
+      selectedId
+    });
+    // console.log({
+    // today: today?.format(),
+    // displayedMonth: displayedMonth?.format(),
+    // selectedId,
+    // myDate: getDateUID(date, 'day'),
+    // isActive: selectedId === getDateUID(date, 'day')
+    // });
+  }
+
   // Override-able local state
   export let today: Moment = window.moment();
   export let displayedMonth = today;
@@ -118,47 +132,3 @@
   </table>
 </div>
 
-<style>
-  .container {
-    --color-background-heading: transparent;
-    --color-background-day: transparent;
-    --color-background-weeknum: transparent;
-    --color-background-weekend: transparent;
-
-    --color-dot: var(--text-muted);
-    --color-arrow: var(--text-muted);
-    --color-button: var(--text-muted);
-
-    --color-text-title: var(--text-normal);
-    --color-text-heading: var(--text-muted);
-    --color-text-day: var(--text-normal);
-    --color-text-today: var(--interactive-accent);
-    --color-text-weeknum: var(--text-muted);
-  }
-
-  .container {
-    padding: 0 8px;
-  }
-
-  th {
-    text-align: center;
-  }
-
-  .weekend {
-    background-color: var(--color-background-weekend);
-  }
-
-  .calendar {
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  th {
-    background-color: var(--color-background-heading);
-    color: var(--color-text-heading);
-    font-size: 0.6em;
-    letter-spacing: 1px;
-    padding: 4px;
-    text-transform: uppercase;
-  }
-</style>

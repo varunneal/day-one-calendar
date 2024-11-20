@@ -6,7 +6,7 @@ async function metadataReducer(
   promisedMetadata: Promise<IDayMetadata>[]
 ): Promise<IDayMetadata> {
   const meta = {
-    dots: [],
+    // dots: [],
     classes: [],
     dataAttributes: {},
   };
@@ -15,7 +15,7 @@ async function metadataReducer(
     (acc, meta) => ({
       classes: [...acc.classes, ...(meta.classes || [])],
       dataAttributes: Object.assign(acc.dataAttributes, meta.dataAttributes),
-      dots: [...acc.dots, ...(meta.dots || [])],
+      // dots: [...acc.dots, ...(meta.dots || [])],
     }),
     meta
   );

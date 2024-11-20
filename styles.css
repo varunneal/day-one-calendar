@@ -9,3 +9,71 @@
 .settings-banner h4 {
   margin: 0;
 }
+
+
+.container {
+  --color-background-heading: transparent;
+
+  --hue-60: calc(var(--accent-h) + 60);
+  --hue-ternary-one: calc(var(--accent-h) + 120);
+  --hue-opposite: calc(var(--accent-h) + 180);
+  --hue-ternary-two: calc(var(--accent-h) + 240);
+  --hue-300: calc(var(--accent-h) + 300);
+
+
+  --color-background-day: var(--interactive-normal);
+  --color-background-day-hover: var(--interactive-normal-hover);
+
+  --color-text-day: var(--text-normal);
+  --color-text-day-hover: var(--text-muted); /* might need correction */
+
+  --color-background-day-note: var(--interactive-accent);
+  --color-background-day-note-hover: var(--interactive-accent-hover);
+
+  --color-text-day-note: var(--text-on-accent);
+  --color-text-day-note-hover: var(--text-accent-hover); /* might need correction */
+
+  --color-text-day-today:  var(--text-accent);
+  --color-text-day-today-hover: var(--text-accent-hover);
+  --color-text-day-today-note: var(--text-on-accent);
+
+  --color-border-day-active: hsl(var(--hue-ternary-one), var(--accent-s), var(--accent-l));
+
+  --color-dot: var(--text-muted);
+  --color-arrow: var(--text-muted);
+  --color-button: var(--text-muted);
+
+  --color-text-title: var(--text-normal);
+  --color-text-heading: var(--text-muted);
+
+  --color-text-weeknum: var(--text-muted);
+  --color-background-weeknum: transparent;
+  --color-background-weekend: transparent;
+}
+
+.container {
+  padding: 0 8px;
+}
+
+th {
+  text-align: center;
+}
+
+.weekend {
+  background-color: var(--color-background-weekend);
+}
+
+.calendar {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+
+th {
+  background-color: var(--color-background-heading);
+  color: var(--color-text-heading);
+  font-size: 0.6em;
+  letter-spacing: 1px;
+  padding: 4px;
+  text-transform: uppercase;
+}

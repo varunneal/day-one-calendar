@@ -2,11 +2,9 @@
 
 <script lang="ts">
   import type { Moment } from "moment";
-  import {
-    Calendar as CalendarBase,
-    ICalendarSource,
-    configureGlobalMomentLocale,
-  } from "obsidian-calendar-ui";
+  import CalendarBase from "../components/Calendar.svelte";
+  import { ICalendarSource } from "../types";
+  import { configureGlobalMomentLocale } from "../localization";
   import { onDestroy } from "svelte";
 
   import type { ISettings } from "src/settings";

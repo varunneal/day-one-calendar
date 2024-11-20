@@ -1,6 +1,7 @@
 import type { Moment, WeekSpec } from "moment";
 import { App, Plugin, WorkspaceLeaf } from "obsidian";
 
+
 import { VIEW_TYPE_CALENDAR } from "./constants";
 import { settings } from "./ui/stores";
 import {
@@ -77,9 +78,7 @@ export default class CalendarPlugin extends Plugin {
     if (this.app.workspace.layoutReady) {
       this.initLeaf();
     } else {
-      this.registerEvent(
-        this.app.workspace.on("layout-ready", this.initLeaf.bind(this))
-      );
+      this.app.workspace.onLayoutReady(() => this.initLeaf.bind(this));
     }
   }
 

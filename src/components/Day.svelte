@@ -8,6 +8,7 @@
   import MetadataResolver from "./MetadataResolver.svelte";
   import type { IDayMetadata } from "../types";
   import { isMetaPressed } from "../utils";
+  import { onMount } from 'svelte';
 
   // Properties
   export let date: Moment;
@@ -24,6 +25,16 @@
   export let today: Moment;
   export let displayedMonth: Moment = null;
   export let selectedId: string = null;
+
+  $: {
+    // console.log({
+      // today: today?.format(),
+      // displayedMonth: displayedMonth?.format(),
+      // selectedId,
+      // myDate: getDateUID(date, 'day'),
+      // isActive: selectedId === getDateUID(date, 'day')
+    // });
+  }
 </script>
 
 <td>
@@ -31,7 +42,7 @@
     <div
       class="{`day ${metadata.classes.join(' ')}`}"
       class:active="{selectedId === getDateUID(date, 'day')}"
-      class:adjacent-month="{!date.isSame(displayedMonth, 'month')}"
+      class:inactive-month="{!date.isSame(displayedMonth, 'month')}"
       class:today="{date.isSame(today, 'day')}"
       on:click="{onClick && ((e) => onClick(date, isMetaPressed(e)))}"
       on:contextmenu="{onContextMenu && ((e) => onContextMenu(date, e))}"
@@ -40,57 +51,77 @@
       {...metadata.dataAttributes || {}}
     >
       {date.format("D")}
-      <div class="dot-container">
-        {#each metadata.dots as dot}
-          <Dot {...dot} />
-        {/each}
-      </div>
+<!--      <div class="dot-container">-->
+<!--        {#each metadata.dots as dot}-->
+<!--          <Dot {...dot} />-->
+<!--        {/each}-->
+<!--      </div>-->
     </div>
   </MetadataResolver>
 </td>
 
 <style>
-  .day {
-    background-color: var(--color-background-day);
-    border-radius: 4px;
-    color: var(--color-text-day);
-    cursor: pointer;
-    font-size: 0.8em;
-    height: 100%;
-    padding: 4px;
-    position: relative;
-    text-align: center;
-    transition: background-color 0.1s ease-in, color 0.1s ease-in;
-    vertical-align: baseline;
-  }
-  .day:hover {
-    background-color: var(--interactive-hover);
-  }
+    .day {
+        background-color: var(--color-background-day);
+        border-radius: 4px;
+        color: var(--color-text-day);
+        cursor: pointer;
+        font-size: 0.8em;
+        height: 100%;
+        padding: 4px;
+        position: relative;
+        text-align: center;
+        transition: background-color 0.1s ease-in, color 0.1s ease-in;
+        vertical-align: baseline;
+        border: 2px solid transparent;
+    }
 
-  .day.active:hover {
-    background-color: var(--interactive-accent-hover);
-  }
 
-  .adjacent-month {
-    opacity: 0.25;
-  }
+    .day:hover {
+        background-color: var(--color-background-day-hover);
+        color: var(--color-text-day-hover);
+    }
 
-  .today {
-    color: var(--color-text-today);
-  }
+    .day.has-note,
+    /*.day.today,*/
+    .day.active {
+        background-color: var(--color-background-day-note);
+        color: var(--color-text-day-note);
+    }
 
-  .day:active,
-  .active,
-  .active.today {
-    color: var(--text-on-accent);
-    background-color: var(--interactive-accent);
-  }
+    .day.has-note:hover,
+    .day.active:hover {
+        background-color: var(--color-background-day-note-hover);
+        color: var(--color-text-day-note-hover);
+    }
 
-  .dot-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    line-height: 6px;
-    min-height: 6px;
-  }
+    /* Active adds border */
+    .day.active {
+        border: 2px solid var(--color-border-day-active);
+    }
+
+    /* Today state - different text color */
+    .day.today {
+        color: var(--color-text-day-today);
+    }
+    .day.today.has-note {
+        color: var(--color-text-day-today-note);
+    }
+
+    .day.today:hover {
+        color: var(--color-text-day-today-hover);
+    }
+
+
+    .inactive-month {
+        opacity: 0.25;
+    }
+
+    /*.dot-container {*/
+    /*    display: flex;*/
+    /*    flex-wrap: wrap;*/
+    /*    justify-content: center;*/
+    /*    line-height: 6px;*/
+    /*    min-height: 6px;*/
+    /*}*/
 </style>

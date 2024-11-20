@@ -2,6 +2,7 @@ import svelte from "rollup-plugin-svelte";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
+import css from 'rollup-plugin-css-only';
 import autoPreprocess from "svelte-preprocess";
 import { env } from "process";
 
@@ -18,6 +19,7 @@ export default {
       emitCss: false,
       preprocess: autoPreprocess(),
     }),
+    // css({ output: 'bundle.css' }),
     typescript({ sourceMap: env.env === "DEV" }),
     resolve({
       browser: true,
