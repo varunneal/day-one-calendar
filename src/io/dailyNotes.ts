@@ -8,6 +8,7 @@ import {
 import type { ISettings } from "src/settings";
 import { createConfirmationDialog } from "src/ui/modal";
 
+
 /**
  * Create a Daily Note for a given date.
  */
@@ -23,11 +24,11 @@ export async function tryToCreateDailyNote(
 
   const createFile = async () => {
     const dailyNote = await createDailyNote(date);
+    // Replace deprecated methods with getLeaf()
     const leaf = inNewSplit
-      ? workspace.splitActiveLeaf()
-      : workspace.getUnpinnedLeaf();
-
-    await leaf.openFile(dailyNote, { active : true });
+      ? workspace.getLeaf(true)  // true creates a new leaf (split)
+      : workspace.getLeaf(false); // false returns existing unpinned leaf
+    await leaf.openFile(dailyNote, { active: true });
     cb?.(dailyNote);
   };
 

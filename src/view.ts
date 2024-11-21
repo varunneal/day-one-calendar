@@ -14,7 +14,10 @@ import { tryToCreateDailyNote } from "src/io/dailyNotes";
 import { tryToCreateWeeklyNote } from "src/io/weeklyNotes";
 import type { ISettings } from "src/settings";
 
-import Calendar from "./ui/Calendar.svelte";
+// import Calendar from "./ui/Calendar.svelte";
+import Main from "./ui/Main.svelte"
+import type ScrollingCalendar from "./components/ScrollingCalendar.svelte";
+
 import { showFileMenu } from "./ui/fileMenu";
 import { activeFile, dailyNotes, weeklyNotes, settings } from "./ui/stores";
 import {
@@ -23,29 +26,39 @@ import {
   tasksSource,
   wordCountSource,
 } from "./ui/sources";
-
 export default class CalendarView extends ItemView {
-  private calendar: Calendar;
+  private main: Main;
+  private calendar: ScrollingCalendar;
   private settings: ISettings;
 
   constructor(leaf: WorkspaceLeaf) {
     super(leaf);
 
+    // Group related bindings together for better readability
+    // Calendar interactions
     this.openOrCreateDailyNote = this.openOrCreateDailyNote.bind(this);
     this.openOrCreateWeeklyNote = this.openOrCreateWeeklyNote.bind(this);
+    this.onHoverDay = this.onHoverDay.bind(this);
+    this.onHoverWeek = this.onHoverWeek.bind(this);
+    this.onContextMenuDay = this.onContextMenuDay.bind(this);
+    this.onContextMenuWeek = this.onContextMenuWeek.bind(this);
 
+    // File system events
     this.onNoteSettingsUpdate = this.onNoteSettingsUpdate.bind(this);
     this.onFileCreated = this.onFileCreated.bind(this);
     this.onFileDeleted = this.onFileDeleted.bind(this);
     this.onFileModified = this.onFileModified.bind(this);
     this.onFileOpen = this.onFileOpen.bind(this);
 
-    this.onHoverDay = this.onHoverDay.bind(this);
-    this.onHoverWeek = this.onHoverWeek.bind(this);
+    // Register events
+    this.registerEvents();
 
-    this.onContextMenuDay = this.onContextMenuDay.bind(this);
-    this.onContextMenuWeek = this.onContextMenuWeek.bind(this);
+    // Initialize settings
+    this.settings = null;
+    this.initializeSettings();
+  }
 
+  private registerEvents(): void {
     this.registerEvent(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (<any>this.app.workspace).on(
@@ -57,8 +70,9 @@ export default class CalendarView extends ItemView {
     this.registerEvent(this.app.vault.on("delete", this.onFileDeleted));
     this.registerEvent(this.app.vault.on("modify", this.onFileModified));
     this.registerEvent(this.app.workspace.on("file-open", this.onFileOpen));
+  }
 
-    this.settings = null;
+  private initializeSettings(): void {
     settings.subscribe((val) => {
       this.settings = val;
 
@@ -82,8 +96,8 @@ export default class CalendarView extends ItemView {
   }
 
   onClose(): Promise<void> {
-    if (this.calendar) {
-      this.calendar.$destroy();
+    if (this.main) {
+      this.main.$destroy();
     }
     return Promise.resolve();
   }
@@ -99,17 +113,21 @@ export default class CalendarView extends ItemView {
     ];
     this.app.workspace.trigger(TRIGGER_ON_OPEN, sources);
 
-    this.calendar = new Calendar({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.main = new Main({
       target: (this as any).contentEl,
       props: {
-        onClickDay: this.openOrCreateDailyNote,
-        onClickWeek: this.openOrCreateWeeklyNote,
-        onHoverDay: this.onHoverDay,
-        onHoverWeek: this.onHoverWeek,
-        onContextMenuDay: this.onContextMenuDay,
-        onContextMenuWeek: this.onContextMenuWeek,
-        sources,
+        calendarProps: {
+          onClickDay: this.openOrCreateDailyNote,
+          onClickWeek: this.openOrCreateWeeklyNote,
+          onHoverDay: this.onHoverDay,
+          onHoverWeek: this.onHoverWeek,
+          onContextMenuDay: this.onContextMenuDay,
+          onContextMenuWeek: this.onContextMenuWeek,
+          sources,
+        },
+        onInit: (calendarComponent: ScrollingCalendar) => {
+          this.calendar = calendarComponent;
+        },
       },
     });
   }
@@ -271,20 +289,19 @@ export default class CalendarView extends ItemView {
     activeFile.setFile(existingFile);
   }
 
+  // todo: why is this so slow?
   async openOrCreateDailyNote(
     date: Moment,
     inNewSplit: boolean
   ): Promise<void> {
     const { workspace } = this.app;
     const existingFile = getDailyNote(date, get(dailyNotes));
-
     if (!existingFile) {
       tryToCreateDailyNote(date, inNewSplit, this.settings, (dailyNote: TFile) => {
         activeFile.setFile(dailyNote);
       });
       return;
     }
-
     const viewState = (this.app.vault as any).getConfig("defaultViewMode");
     const leaf = await workspace.getLeaf(inNewSplit);
     await leaf.openFile(existingFile, {
@@ -293,4 +310,8 @@ export default class CalendarView extends ItemView {
     });
     activeFile.setFile(existingFile);
   }
+
+
+
+
 }

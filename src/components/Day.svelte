@@ -26,7 +26,7 @@
   export let displayedMonth: Moment = null;
   export let selectedId: string = null;
 
-  $: {
+  // $: {
     // console.log({
       // today: today?.format(),
       // displayedMonth: displayedMonth?.format(),
@@ -34,7 +34,7 @@
       // myDate: getDateUID(date, 'day'),
       // isActive: selectedId === getDateUID(date, 'day')
     // });
-  }
+  // }
 </script>
 
 <td>

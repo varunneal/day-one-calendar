@@ -66,6 +66,47 @@ th {
 .calendar {
   border-collapse: collapse;
   width: 100%;
+
+}
+.scrolling-container {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+
+.main-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.calendar-section {
+  height: 65%;
+  min-height: 300px;
+  border-bottom: 2px solid var(--background-modifier-border);
+}
+
+.history-section {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+
+.months-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.month-container {
+  padding: 1rem 0;
+}
+
+.month-container:first-child {
+  padding-top: 0;
 }
 
 
