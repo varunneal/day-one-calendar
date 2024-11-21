@@ -13,7 +13,6 @@
     "test:watch": "yarn test -- --watch"
   },
   "dependencies": {
-    "@sveltejs/svelte-virtual-list": "^3.0.1",
     "obsidian": "obsidianmd/obsidian-api#master",
     "obsidian-daily-notes-interface": "0.9.0",
     "svelte": "3.35.0",
