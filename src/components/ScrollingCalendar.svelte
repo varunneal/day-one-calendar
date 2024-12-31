@@ -28,6 +28,8 @@
   let currentMonthIndex: number;
   let virtualScroll: VirtualScroll; // Reference to hold the component instance
   let isLoading = false;
+  let visibleIndex = 0;
+  export let visibleYear;
 
 
   $: today = getToday($settings);
@@ -35,6 +37,13 @@
   export function tick() {
     today = window.moment();
   }
+
+  export function scrollToToday() {
+    console.log("scroll function called from calendar, curr month is", currentMonthIndex);
+    if (!virtualScroll || displayedMonths.length === 0) return;
+    virtualScroll.scrollToIndex(currentMonthIndex);
+  }
+
 
   function getToday(settings: ISettings) {
     configureGlobalMomentLocale(settings.localeOverride, settings.weekStart);
@@ -74,7 +83,7 @@
     const months: Moment[] = [];
     let month;
 
-    for (month = 0; month < 12 * 2; month++) {
+    for (month = 0; month < 12 * yearsToLoad; month++) {
       const year = currFirstYear - yearsToLoad + Math.floor(month / 12);
       months.push(moment().year(year).month(month % 12).startOf('month'));
     }
@@ -86,20 +95,24 @@
 
 
 
-
   // Transform months array into objects with unique keys
   $: monthsData = displayedMonths.map((month) => ({
     key: month.format('YYYY-MM'), // Unique key for each month
     month: month
   }));
 
+  $: visibleYear = displayedMonths[visibleIndex]
+    ? displayedMonths[visibleIndex].year()
+    : null;
+
+
+
   onMount(() => {
     let {months, i} = generateInitialMonths();
-    console.log("current month index should be set to", i);
     displayedMonths = months;
     currentMonthIndex = i;
     // todo
-    // virtualScroll.scrollToIndex(currentMonthIndex);
+    virtualScroll.scrollToIndex(currentMonthIndex);
   });
 
   // 1 minute heartbeat to keep today reflecting the current day
@@ -115,6 +128,10 @@
   onDestroy(() => {
     clearInterval(heartbeat);
   });
+
+  export interface ScrollingCalendar {
+    scrollToToday(): number;
+  }
 
 
 </script>
@@ -135,9 +152,10 @@
     data={monthsData}
     key="key"
     height={250}
-    keeps={12}
+    keeps={18}
     start={currentMonthIndex}
     on:scrolltop={handleScrollTop}
+    bind:visibleIndex={visibleIndex}
   >
     <svelte:fragment slot="item" let:item>
       <MonthCalendar

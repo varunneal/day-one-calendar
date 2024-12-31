@@ -4,8 +4,6 @@
   import type { Locale, Moment } from "moment";
 
   import Day from "./Day.svelte";
-  import Nav from "./Nav.svelte";
-  import WeekNum from "./WeekNum.svelte";
   import { getDailyMetadata, getWeeklyMetadata } from "../metadata";
   import type { ICalendarSource, IMonth } from "../types";
   import { getDaysOfWeek, getMonth, isWeekend } from "../utils";
@@ -64,13 +62,16 @@
 </script>
 
 <div id="calendar-container" class="month-container">
-  <Nav
-      today="{today}"
-      displayedMonth="{displayedMonth}"
-      incrementDisplayedMonth="{incrementDisplayedMonth}"
-      decrementDisplayedMonth="{decrementDisplayedMonth}"
-      resetDisplayedMonth="{resetDisplayedMonth}"
-    />
+  <div class="nav">
+    <h3 class="nav-title">
+      <span class="nav-month-name">{displayedMonth.format('MMM')}</span>
+      <span class="year"><!-- class:january={displayedMonth.format('MMM') === 'Jan'}> -->
+        {displayedMonth.format('YYYY')}
+    </span>
+    </h3>
+
+  </div>
+
   <table class="calendar">
     <colgroup>
       {#if showWeekNums}
@@ -93,16 +94,6 @@
     <tbody>
       {#each month as week (week.weekNum)}
         <tr>
-          {#if showWeekNums}
-            <WeekNum
-              {...week}
-              metadata="{getWeeklyMetadata(sources, week.days[0], today)}"
-              onClick="{onClickWeek}"
-              onContextMenu="{onContextMenuWeek}"
-              onHover="{onHoverWeek}"
-              selectedId="{selectedId}"
-            />
-          {/if}
           {#each week.days as day (day.format())}
             <Day
               date="{day}"

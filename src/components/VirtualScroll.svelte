@@ -1,5 +1,6 @@
-<script>
-  import { onMount, createEventDispatcher } from 'svelte';
+
+<script lang="ts">
+  import { createEventDispatcher, onMount } from "svelte";
 
   /** @type {Array} - Data array to virtualize */
   export let data = [];
@@ -8,9 +9,9 @@
   /** @type {number} - Number of items to keep visible */
   export let keeps = 12;
   /** @type {number} - Initial index to scroll to */
-  export let start = 0;
-
-
+  export let start = 0
+  /** @type {number} - Visible index  */
+  export let visibleIndex = 0;
 
   // Extra items to render above/below viewport
   const buffer = 2;
@@ -50,6 +51,8 @@
       end: endIndex,
       offset: startIndex * height
     };
+
+    visibleIndex = range.start + buffer;
   }
 
   /**
@@ -63,6 +66,12 @@
       top: index * height,
       behavior: 'smooth'
     });
+  }
+
+
+  export interface VirtualScrollMethods {
+    visibleIndex: number;
+    scrollToIndex(index: number): void;
   }
 
   onMount(() => {

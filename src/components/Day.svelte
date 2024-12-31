@@ -4,7 +4,6 @@
   import type { Moment } from "moment";
   import { getDateUID } from "obsidian-daily-notes-interface";
 
-  import Dot from "./Dot.svelte";
   import MetadataResolver from "./MetadataResolver.svelte";
   import type { IDayMetadata } from "../types";
   import { isMetaPressed } from "../utils";
@@ -93,14 +92,14 @@
     /* Today state - different text color */
     .day.today {
         /*color: var(--color-text-day-today);*/
-        outline: 1px solid white;
-        outline-offset: -3px;
-        border-radius: 20%;
+        border: 2px solid white;
+        /*outline-offset: -3px;*/
+        /*border-radius: 25%;*/
         font-weight: bold;
     }
-    .day.today.has-note {
+    .day.today.active {
         /*color: var(--color-text-day-today-note);*/
-        text-decoration-color: white;
+        border: 2px solid var(--color-border-day-active);
     }
 
     .day.today:hover {

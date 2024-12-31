@@ -14,7 +14,6 @@ import { tryToCreateDailyNote } from "src/io/dailyNotes";
 import { tryToCreateWeeklyNote } from "src/io/weeklyNotes";
 import type { ISettings } from "src/settings";
 
-// import Calendar from "./ui/Calendar.svelte";
 import Main from "./ui/Main.svelte"
 import type ScrollingCalendar from "./components/ScrollingCalendar.svelte";
 

@@ -2,6 +2,7 @@
 <script lang="ts">
   import type { Moment } from "moment";
   import ScrollingCalendar from "../components/ScrollingCalendar.svelte";
+  import Header from "../components/Header.svelte";
   import OnThisDay from "../components/OnThisDay.svelte";
   import { ICalendarSource } from "../types";
 
@@ -20,25 +21,24 @@
 
   let selectedDate: Moment;
   let calendarComponent: ScrollingCalendar;
+  let visibleYear: number | null = null;
+  let scrollToToday: () => void;
 
   $: if (calendarComponent) {
-    console.log("calendar component init..");
     onInit(calendarComponent);
   }
 </script>
 
 <div class="main-view">
+  <Header {scrollToToday} {visibleYear}/>
   <div class="calendar-section">
     <ScrollingCalendar
       bind:this={calendarComponent}
+      bind:visibleYear={visibleYear}
+      bind:scrollToToday={scrollToToday}
       {...calendarProps}
     />
   </div>
 
-<!--  <div class="history-section">-->
-<!--    <OnThisDay-->
-<!--      date={selectedDate}-->
-<!--      sources={calendarProps.sources}-->
-<!--    />-->
-<!--  </div>-->
+<!--TODO: "on this day section"-->
 </div>
