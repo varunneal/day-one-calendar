@@ -26,15 +26,6 @@
   export let displayedMonth: Moment = null;
   export let selectedId: string = null;
 
-  // $: {
-    // console.log({
-      // today: today?.format(),
-      // displayedMonth: displayedMonth?.format(),
-      // selectedId,
-      // myDate: getDateUID(date, 'day'),
-      // isActive: selectedId === getDateUID(date, 'day')
-    // });
-  // }
 </script>
 
 <td>
@@ -83,7 +74,6 @@
     }
 
     .day.has-note,
-    /*.day.today,*/
     .day.active {
         background-color: var(--color-background-day-note);
         color: var(--color-text-day-note);
@@ -102,10 +92,15 @@
 
     /* Today state - different text color */
     .day.today {
-        color: var(--color-text-day-today);
+        /*color: var(--color-text-day-today);*/
+        outline: 1px solid white;
+        outline-offset: -3px;
+        border-radius: 20%;
+        font-weight: bold;
     }
     .day.today.has-note {
-        color: var(--color-text-day-today-note);
+        /*color: var(--color-text-day-today-note);*/
+        text-decoration-color: white;
     }
 
     .day.today:hover {
@@ -114,14 +109,9 @@
 
 
     .inactive-month {
-        opacity: 0.25;
+        opacity: 0;
+        pointer-events: none;
+        cursor: default;
     }
 
-    /*.dot-container {*/
-    /*    display: flex;*/
-    /*    flex-wrap: wrap;*/
-    /*    justify-content: center;*/
-    /*    line-height: 6px;*/
-    /*    min-height: 6px;*/
-    /*}*/
 </style>

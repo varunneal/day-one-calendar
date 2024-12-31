@@ -15,25 +15,27 @@
 </script>
 
 <div class="nav">
-  <h3 class="title" on:click="{resetDisplayedMonth}">
+  <h3 class="title" on:click={resetDisplayedMonth}>
     <span class="month">{displayedMonth.format('MMM')}</span>
-    <span class="year">{displayedMonth.format('YYYY')}</span>
+    <span class="year"><!-- class:january={displayedMonth.format('MMM') === 'Jan'}> -->
+      {displayedMonth.format('YYYY')}
+    </span>
   </h3>
-  <div class="right-nav">
-    <Arrow
-      direction="left"
-      onClick="{decrementDisplayedMonth}"
-      tooltip="Previous Month"
-    />
-    <div class="reset-button" on:click="{resetDisplayedMonth}">
-      {todayDisplayStr}
-    </div>
-    <Arrow
-      direction="right"
-      onClick="{incrementDisplayedMonth}"
-      tooltip="Next Month"
-    />
-  </div>
+<!--  <div class="right-nav">-->
+<!--    <Arrow-->
+<!--      direction="left"-->
+<!--      onClick="{decrementDisplayedMonth}"-->
+<!--      tooltip="Previous Month"-->
+<!--    />-->
+<!--    <div class="reset-button" on:click="{resetDisplayedMonth}">-->
+<!--      {todayDisplayStr}-->
+<!--    </div>-->
+<!--    <Arrow-->
+<!--      direction="right"-->
+<!--      onClick="{incrementDisplayedMonth}"-->
+<!--      tooltip="Next Month"-->
+<!--    />-->
+<!--  </div>-->
 </div>
 
 <style>
@@ -56,7 +58,7 @@
     text-transform: capitalize;
   }
 
-  .year {
+  .year.january {
     color: var(--interactive-accent);
   }
 

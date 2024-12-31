@@ -127,6 +127,7 @@ export default class CalendarView extends ItemView {
         },
         onInit: (calendarComponent: ScrollingCalendar) => {
           this.calendar = calendarComponent;
+          console.log("calendar initialized..");
         },
       },
     });
@@ -289,7 +290,6 @@ export default class CalendarView extends ItemView {
     activeFile.setFile(existingFile);
   }
 
-  // todo: why is this so slow?
   async openOrCreateDailyNote(
     date: Moment,
     inNewSplit: boolean

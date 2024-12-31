@@ -22,6 +22,7 @@
   let calendarComponent: ScrollingCalendar;
 
   $: if (calendarComponent) {
+    console.log("calendar component init..");
     onInit(calendarComponent);
   }
 </script>

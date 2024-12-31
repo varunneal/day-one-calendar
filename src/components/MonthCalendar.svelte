@@ -59,16 +59,18 @@
   export function resetDisplayedMonth() {
     displayedMonth = today.clone();
   }
+
+
 </script>
 
-<div id="calendar-container" class="container">
+<div id="calendar-container" class="month-container">
   <Nav
-    today="{today}"
-    displayedMonth="{displayedMonth}"
-    incrementDisplayedMonth="{incrementDisplayedMonth}"
-    decrementDisplayedMonth="{decrementDisplayedMonth}"
-    resetDisplayedMonth="{resetDisplayedMonth}"
-  />
+      today="{today}"
+      displayedMonth="{displayedMonth}"
+      incrementDisplayedMonth="{incrementDisplayedMonth}"
+      decrementDisplayedMonth="{decrementDisplayedMonth}"
+      resetDisplayedMonth="{resetDisplayedMonth}"
+    />
   <table class="calendar">
     <colgroup>
       {#if showWeekNums}

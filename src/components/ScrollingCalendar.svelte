@@ -1,8 +1,12 @@
-<svelte:options immutable />
 <script lang="ts">
-  import VirtualList from './VirtualList.svelte';
+  // import VirtualScroll from "../VirtualList"
+  import VirtualScroll from './VirtualScroll.svelte'
+  import { fade } from 'svelte/transition';
+
   import type { Moment } from "moment";
-  import CalendarBase from "./MonthCalendar.svelte";
+  import moment from 'moment';
+
+  import MonthCalendar from "./MonthCalendar.svelte";
   import { ICalendarSource } from "../types";
   import { configureGlobalMomentLocale } from "../localization";
   import { onDestroy, onMount } from "svelte";
@@ -21,7 +25,10 @@
   // State
   let today: Moment;
   let displayedMonths: Moment[] = [];
-  const MAX_MONTHS = 120; // 10 years
+  let currentMonthIndex: number;
+  let virtualScroll: VirtualScroll; // Reference to hold the component instance
+  let isLoading = false;
+
 
   $: today = getToday($settings);
 
@@ -36,44 +43,104 @@
     return window.moment();
   }
 
-  function generateInitialMonths() {
+
+  function generateInitialMonths(): { months: Moment[], i: number } {
     const months: Moment[] = [];
-    for (let i = 0; i < MAX_MONTHS; i++) {
-      months.push(today.clone().subtract(i, 'months'));
+    const currentYear = today.year();
+    const currentMonth: number = today.month();
+    const numYears = 2;
+
+    let month;
+    for (month = 0; month < numYears * 12; month++) {
+      const year = currentYear - numYears + 1 + Math.floor(month / 12);
+      months.push(moment().year(year).month(month % 12).startOf('month'));
     }
-    return months;
+
+    const i = (numYears - 1) * 12 + currentMonth;
+    return { months, i};
   }
 
+
+
+  async function handleScrollTop() {
+    isLoading = true;
+    console.log("handle scroll top called");
+
+    // Wait for 1 second
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    const yearsToLoad = 1;
+    let currFirstYear = displayedMonths[0].year();
+    const months: Moment[] = [];
+    let month;
+
+    for (month = 0; month < 12 * 2; month++) {
+      const year = currFirstYear - yearsToLoad + Math.floor(month / 12);
+      months.push(moment().year(year).month(month % 12).startOf('month'));
+    }
+    displayedMonths = [...months, ...displayedMonths];
+    currentMonthIndex += yearsToLoad * 12;
+
+    isLoading = false;
+  }
+
+
+
+
+  // Transform months array into objects with unique keys
+  $: monthsData = displayedMonths.map((month) => ({
+    key: month.format('YYYY-MM'), // Unique key for each month
+    month: month
+  }));
+
   onMount(() => {
-    displayedMonths = generateInitialMonths();
+    let {months, i} = generateInitialMonths();
+    console.log("current month index should be set to", i);
+    displayedMonths = months;
+    currentMonthIndex = i;
+    // todo
+    // virtualScroll.scrollToIndex(currentMonthIndex);
   });
 
   // 1 minute heartbeat to keep today reflecting the current day
   let heartbeat = setInterval(() => {
-    tick();
-    // Check if we need to add a new month at the top
-    if (!today.isSame(displayedMonths[0], 'month')) {
-      displayedMonths = [today.clone(), ...displayedMonths];
-    }
+    today = window.moment();
+
+    // todo: change this to yearly logic for updating display months lol
+    // if (!today.isSame(displayedMonths[currentMonthIndex], 'month')) {
+    //   displayedMonths = [today.clone(), ...displayedMonths];
+    // }
   }, 1000 * 60);
 
   onDestroy(() => {
     clearInterval(heartbeat);
   });
 
+
 </script>
 
+
 <div class="scrolling-container">
-  <VirtualList
-    items="{displayedMonths}"
-    itemSize="{500}"
-    reverse={true}
-    style="height: 100%; overflow-y: auto;"
-    let:item
+  {#if isLoading}
+    <div
+      class="loading-bar"
+      transition:fade={{ duration: 100 }}
+    >
+      <div class="loading-bar-inner"></div>
+    </div>
+  {/if}
+
+  <VirtualScroll
+    bind:this={virtualScroll}
+    data={monthsData}
+    key="key"
+    height={250}
+    keeps={12}
+    start={currentMonthIndex}
+    on:scrolltop={handleScrollTop}
   >
-  <div class="months-wrapper">
-    <div class="month-container">
-      <CalendarBase
+    <svelte:fragment slot="item" let:item>
+      <MonthCalendar
         {sources}
         {today}
         {onHoverDay}
@@ -82,12 +149,11 @@
         {onContextMenuWeek}
         {onClickDay}
         {onClickWeek}
-        displayedMonth="{item}"
-        localeData="{today.localeData()}"
-        selectedId="{$activeFile}"
-        showWeekNums="{$settings.showWeeklyNote}"
+        displayedMonth={item.month}
+        localeData={today.localeData()}
+        selectedId={$activeFile}
+        showWeekNums={$settings.showWeeklyNote}
       />
-    </div>
-  </div>
-  </VirtualList>
+    </svelte:fragment>
+  </VirtualScroll>
 </div>
