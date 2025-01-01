@@ -41,11 +41,6 @@
       {...metadata.dataAttributes || {}}
     >
       {date.format("D")}
-<!--      <div class="dot-container">-->
-<!--        {#each metadata.dots as dot}-->
-<!--          <Dot {...dot} />-->
-<!--        {/each}-->
-<!--      </div>-->
     </div>
   </MetadataResolver>
 </td>

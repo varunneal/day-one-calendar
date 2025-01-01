@@ -5,6 +5,8 @@
   import Header from "../components/Header.svelte";
   import OnThisDay from "../components/OnThisDay.svelte";
   import { ICalendarSource } from "../types";
+  import { activeFile } from "./stores";
+
 
   // Props to be passed from View
   export let calendarProps: {
@@ -17,7 +19,10 @@
     onContextMenuWeek: (date: Moment, event: MouseEvent) => boolean;
   };
 
+
   export let onInit: (calendar: ScrollingCalendar) => void;
+
+  const onClickDate = (date: Moment) => calendarProps.onClickDay(date, true);
 
   let selectedDate: Moment;
   let calendarComponent: ScrollingCalendar;
@@ -27,6 +32,8 @@
   $: if (calendarComponent) {
     onInit(calendarComponent);
   }
+
+
 </script>
 
 <div class="main-view">
@@ -39,6 +46,7 @@
       {...calendarProps}
     />
   </div>
-
-<!--TODO: "on this day section"-->
+  <OnThisDay
+    onClickDate={onClickDate}
+  />
 </div>

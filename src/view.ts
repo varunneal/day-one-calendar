@@ -124,9 +124,9 @@ export default class CalendarView extends ItemView {
           onContextMenuWeek: this.onContextMenuWeek,
           sources,
         },
+
         onInit: (calendarComponent: ScrollingCalendar) => {
           this.calendar = calendarComponent;
-          console.log("calendar initialized..");
         },
       },
     });

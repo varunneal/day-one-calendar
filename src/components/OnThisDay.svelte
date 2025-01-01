@@ -1,90 +1,123 @@
+<svelte:options immutable />
 <script lang="ts">
   import type { Moment } from "moment";
-  import type { ICalendarSource } from "../types";
+  import moment from "moment";
+  import { getDailyNote } from "obsidian-daily-notes-interface";
+  import { activeFile, dailyNotes, weeklyNotes } from "../ui/stores";
 
-  export let date: Moment;
-  export let sources: ICalendarSource[];
+  export let onClickDate: (date: Moment) => boolean;
 
-  $: formattedDate = date?.format('MMMM D');
-  $: year = date?.format('YYYY');
+  interface HistoricalNote {
+    date: Moment;
+    exists: boolean;
+    name: string;
+  }
+
+
+  function parseUUIDToMoment(uuid: string): Moment | null {
+    if (!uuid) return null;
+    const match = uuid.match(/day-(.+)/);
+    if (!match) return null;
+
+    const dateString = match[1];
+    return moment(dateString);
+  }
+
+  $: historicalNotes = getHistoricalNotes(parseUUIDToMoment($activeFile));
+
+
+  function getHistoricalNotes(date: Moment | null): HistoricalNote[] {
+    if (!date) return [];
+
+    const notes: HistoricalNote[] = [];
+    const currentYear = date.year();
+    const month = date.month();
+    const day = date.date();
+
+    // todo: make less derpy
+    for (let year = currentYear - 60; year <= currentYear + 60; year++) {
+      const historicalDate = window.moment().year(year).month(month).date(day);
+      const file = getDailyNote(historicalDate, $dailyNotes);
+
+      if (file) {
+        // console.log("file contents:");
+        // console.dir(file);
+        notes.push({
+          date: historicalDate,
+          name: file.basename,
+          exists: true
+        });
+      }
+    }
+
+    return notes;
+  }
 </script>
 
-<div class="on-this-day">
-  <h2 class="header">On this day</h2>
+{#if historicalNotes && historicalNotes.length > 0}
+  <div class="on-this-day">
+    <h3 class="on-this-day-header">
+      On this day ({historicalNotes.length} {historicalNotes.length === 1 ? 'entry' : 'entries'})
+    </h3>
+    <ul class="on-this-day-list">
+      {#each historicalNotes as note}
+        <li>
+         <span
+           class="internal-link clickable-link"
+           on:click={() => onClickDate(note.date)}
+         >
+            {note.name}
+         </span>
+        </li>
+      {/each}
+    </ul>
+  </div>
+{/if}
 
-  {#if date}
-    <div class="date-info">
-      <div class="current-date">
-        {formattedDate}, {year}
-      </div>
-
-      <div class="historical-entries">
-        <p class="placeholder-text">You have entries on this day from:</p>
-        <ul>
-          <li>
-            <a href="#" class="entry-link">
-              {formattedDate}, 2023
-            </a>
-          </li>
-          <li>
-            <a href="#" class="entry-link">
-              {formattedDate}, 2022
-            </a>
-          </li>
-          <li>
-            <a href="#" class="entry-link">
-              {formattedDate}, 2021
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  {:else}
-    <p class="placeholder-text">Select a date to see historical entries</p>
-  {/if}
-</div>
 
 <style>
     .on-this-day {
-        padding: 0 1rem;
+        padding: 1rem;
+        border-top: 1px solid var(--background-modifier-border);
     }
 
-    /*.header {*/
-    /*    font-size: 1.5em;*/
-    /*    margin-bottom: 1rem;*/
-    /*    color: var(--text-normal);*/
-    /*}*/
+    .on-this-day-header {
+        margin: 0 0 0.8rem 0;
+        font-size: 1rem;
+        font-weight: 600;
+    }
 
-    /*.current-date {*/
-    /*    font-size: 1.1em;*/
-    /*    margin-bottom: 1rem;*/
-    /*    color: var(--text-muted);*/
-    /*}*/
+    .on-this-day-list {
+        margin: 0;
+        padding-left: 1.5rem;
+        list-style: disc;
+    }
 
-    /*.historical-entries {*/
-    /*    margin-top: 1rem;*/
-    /*}*/
+    .on-this-day-list li {
+        margin-bottom: 0.5rem;
+        color: var(--text-muted);  /* Makes the bullet point slightly muted */
+    }
 
-    /*.placeholder-text {*/
-    /*    color: var(--text-muted);*/
-    /*}*/
+    .internal-link {
+        color: var(--link-color);
+        text-decoration: none;
+        position: relative;
+    }
 
-    /*ul {*/
-    /*    list-style-type: none;*/
-    /*    padding: 0;*/
-    /*    margin: 0.5rem 0;*/
-    /*}*/
+    .clickable-link {
+        cursor: pointer;
+    }
 
-    /*li {*/
-    /*    margin: 0.5rem 0;*/
-    /*}*/
+    .internal-link:hover {
+        text-decoration: underline;
+    }
 
-    /*.entry-link {*/
-    /*    color: var(--text-accent);*/
-    /*    text-decoration: none;*/
-    /*}*/
+    /* Optional: Add a subtle transition effect */
+    .internal-link {
+        transition: color 0.15s ease-in-out;
+    }
 
-    /*.entry-link:hover {*/
-    /*    text-decoration: underline;*/
-    /*}*/
+    .internal-link:hover {
+        color: var(--link-color-hover, var(--link-color));
+    }
 </style>

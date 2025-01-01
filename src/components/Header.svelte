@@ -20,16 +20,18 @@
         /*background-color: var(--background-secondary);;*/
     }
     .year-display {
-        font-size: 1.8em; /* Slightly reduced font size */
+        font-size: 1.8em;
         font-weight: 500;
     }
     .today-button {
         padding: 0.25rem 0.6rem; /* Reduced padding */
-        border-radius: 4px;
-        font-size: 0.85em; /* Slightly reduced font size */
-        border: 1px solid var(--background-modifier-border);
-        color: var(--text-on-accent);
+        border-radius: 15%;
+        font-size: 1.0em;
+        font-weight: 200;
+        /*border: 1px solid var(--background-modifier-border);*/
+        /*color: var(--text-on-accent);*/
         cursor: pointer;
+        /*background-color: var(--background-secondary);*/
     }
     .today-button:hover {
         background-color: var(--interactive-hover);

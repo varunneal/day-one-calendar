@@ -39,7 +39,6 @@
   }
 
   export function scrollToToday() {
-    console.log("scroll function called from calendar, curr month is", currentMonthIndex);
     if (!virtualScroll || displayedMonths.length === 0) return;
     virtualScroll.scrollToIndex(currentMonthIndex);
   }
