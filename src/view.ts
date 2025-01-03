@@ -18,7 +18,7 @@ import Main from "./ui/Main.svelte"
 import type ScrollingCalendar from "./components/ScrollingCalendar.svelte";
 
 import { showFileMenu } from "./ui/fileMenu";
-import { activeFile, dailyNotes, weeklyNotes, settings } from "./ui/stores";
+import { activeFile, dailyNotes, weeklyNotes, settings, selectedDate} from "./ui/stores";
 import {
   customTagsSource,
   streakSource,
@@ -33,14 +33,13 @@ export default class CalendarView extends ItemView {
   constructor(leaf: WorkspaceLeaf) {
     super(leaf);
 
+
     // Group related bindings together for better readability
     // Calendar interactions
     this.openOrCreateDailyNote = this.openOrCreateDailyNote.bind(this);
-    this.openOrCreateWeeklyNote = this.openOrCreateWeeklyNote.bind(this);
     this.onHoverDay = this.onHoverDay.bind(this);
-    this.onHoverWeek = this.onHoverWeek.bind(this);
     this.onContextMenuDay = this.onContextMenuDay.bind(this);
-    this.onContextMenuWeek = this.onContextMenuWeek.bind(this);
+    this.onClickDay = this.onClickDay.bind(this);
 
     // File system events
     this.onNoteSettingsUpdate = this.onNoteSettingsUpdate.bind(this);
@@ -55,6 +54,8 @@ export default class CalendarView extends ItemView {
     // Initialize settings
     this.settings = null;
     this.initializeSettings();
+
+
   }
 
   private registerEvents(): void {
@@ -115,21 +116,22 @@ export default class CalendarView extends ItemView {
     this.main = new Main({
       target: (this as any).contentEl,
       props: {
-        calendarProps: {
-          onClickDay: this.openOrCreateDailyNote,
-          onClickWeek: this.openOrCreateWeeklyNote,
+        calendarActions: {
+          onClickDay: this.onClickDay,
           onHoverDay: this.onHoverDay,
-          onHoverWeek: this.onHoverWeek,
-          onContextMenuDay: this.onContextMenuDay,
-          onContextMenuWeek: this.onContextMenuWeek,
+          onFileMenuDay: this.onContextMenuDay,
           sources,
         },
-
+        openOrCreateNote: this.openOrCreateDailyNote,
         onInit: (calendarComponent: ScrollingCalendar) => {
           this.calendar = calendarComponent;
         },
       },
     });
+  }
+
+  onClickDay(date: Moment): void {
+    selectedDate.toggle(date);
   }
 
   onHoverDay(
@@ -309,8 +311,4 @@ export default class CalendarView extends ItemView {
     });
     activeFile.setFile(existingFile);
   }
-
-
-
-
 }

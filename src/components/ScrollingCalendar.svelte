@@ -16,11 +16,8 @@
   // Props
   export let sources: ICalendarSource[];
   export let onHoverDay: (date: Moment, targetEl: EventTarget) => boolean;
-  export let onHoverWeek: (date: Moment, targetEl: EventTarget) => boolean;
   export let onClickDay: (date: Moment, isMetaPressed: boolean) => boolean;
-  export let onClickWeek: (date: Moment, isMetaPressed: boolean) => boolean;
-  export let onContextMenuDay: (date: Moment, event: MouseEvent) => boolean;
-  export let onContextMenuWeek: (date: Moment, event: MouseEvent) => boolean;
+  export let onFileMenuDay: (date: Moment, event: MouseEvent) => boolean;
 
   // State
   let today: Moment;
@@ -29,7 +26,7 @@
   let virtualScroll: VirtualScroll; // Reference to hold the component instance
   let isLoading = false;
   let visibleIndex = 0;
-  export let visibleYear;
+  export let visibleMonth;
 
 
   $: today = getToday($settings);
@@ -93,16 +90,14 @@
   }
 
 
-
-  // Transform months array into objects with unique keys
   $: monthsData = displayedMonths.map((month) => ({
-    key: month.format('YYYY-MM'), // Unique key for each month
+    key: month.format('YYYY-MM'),
     month: month
   }));
 
-  $: visibleYear = displayedMonths[visibleIndex]
-    ? displayedMonths[visibleIndex].year()
-    : null;
+  $: visibleMonth = displayedMonths[visibleIndex]
+    ? displayedMonths[visibleIndex]
+    : window.moment();
 
 
 
@@ -110,7 +105,6 @@
     let {months, i} = generateInitialMonths();
     displayedMonths = months;
     currentMonthIndex = i;
-    // todo
     virtualScroll.scrollToIndex(currentMonthIndex);
   });
 
@@ -118,7 +112,7 @@
   let heartbeat = setInterval(() => {
     today = window.moment();
 
-    // todo: change this to yearly logic for updating display months lol
+    // todo: change this to monthkt logic for updating display months index lol idk
     // if (!today.isSame(displayedMonths[currentMonthIndex], 'month')) {
     //   displayedMonths = [today.clone(), ...displayedMonths];
     // }
@@ -161,14 +155,10 @@
         {sources}
         {today}
         {onHoverDay}
-        {onHoverWeek}
-        {onContextMenuDay}
-        {onContextMenuWeek}
+        {onFileMenuDay}
         {onClickDay}
-        {onClickWeek}
         displayedMonth={item.month}
         localeData={today.localeData()}
-        selectedId={$activeFile}
         showWeekNums={$settings.showWeeklyNote}
       />
     </svelte:fragment>

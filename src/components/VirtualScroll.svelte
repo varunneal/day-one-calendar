@@ -52,7 +52,7 @@
       offset: startIndex * height
     };
 
-    visibleIndex = range.start + buffer;
+    visibleIndex = Math.floor(scrollTop / height);
   }
 
   /**

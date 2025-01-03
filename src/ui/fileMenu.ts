@@ -12,6 +12,7 @@ export function showFileMenu(app: App, file: TFile, position: Point): void {
       })
   );
 
+
   app.workspace.trigger(
     "file-menu",
     fileMenu,

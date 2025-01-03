@@ -8,6 +8,7 @@ import { writable } from "svelte/store";
 import { defaultSettings, ISettings } from "src/settings";
 
 import { getDateUIDFromFile } from "./utils";
+import type { Moment } from "moment";
 
 function createDailyNotesStore() {
   let hasError = false;
@@ -53,10 +54,6 @@ function createWeeklyNotesStore() {
   };
 }
 
-export const settings = writable<ISettings>(defaultSettings);
-export const dailyNotes = createDailyNotesStore();
-export const weeklyNotes = createWeeklyNotesStore();
-
 function createSelectedFileStore() {
   const store = writable<string>(null);
 
@@ -69,4 +66,20 @@ function createSelectedFileStore() {
   };
 }
 
+function createSelectedDateStore() {
+  const store = writable<Moment | null>(null);
+  return {
+    toggle: (date: Moment) => {
+      store.update(current =>
+        current?.isSame(date, 'day') ? null : date
+      );
+    },
+    ...store,
+  };
+}
+
+export const selectedDate = createSelectedDateStore();
+export const settings = writable<ISettings>(defaultSettings);
+export const dailyNotes = createDailyNotesStore();
+export const weeklyNotes = createWeeklyNotesStore();
 export const activeFile = createSelectedFileStore();

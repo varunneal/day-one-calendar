@@ -5,48 +5,66 @@
   import Header from "../components/Header.svelte";
   import OnThisDay from "../components/OnThisDay.svelte";
   import { ICalendarSource } from "../types";
-  import { activeFile } from "./stores";
+  import { activeFile, selectedDate } from "./stores";
+  import ContextPanel from "../components/ContextPanel.svelte";
 
 
   // Props to be passed from View
-  export let calendarProps: {
+  export let calendarActions: {
     sources: ICalendarSource[];
     onHoverDay: (date: Moment, targetEl: EventTarget) => boolean;
-    onHoverWeek: (date: Moment, targetEl: EventTarget) => boolean;
     onClickDay: (date: Moment, isMetaPressed: boolean) => boolean;
-    onClickWeek: (date: Moment, isMetaPressed: boolean) => boolean;
-    onContextMenuDay: (date: Moment, event: MouseEvent) => boolean;
-    onContextMenuWeek: (date: Moment, event: MouseEvent) => boolean;
+    onFileMenuDay: (date: Moment, event: MouseEvent) => boolean;
   };
 
+  export let openOrCreateNote: (date: Moment, isMetaPressed: boolean) => boolean;
 
+
+  $: console.log('selectedDate changed:', $selectedDate);
   export let onInit: (calendar: ScrollingCalendar) => void;
 
-  const onClickDate = (date: Moment) => calendarProps.onClickDay(date, true);
 
-  let selectedDate: Moment;
   let calendarComponent: ScrollingCalendar;
-  let visibleYear: number | null = null;
+
+  // todo: change to moment, will allow for active control
+  export let visibleMonth: Moment = window.moment();
+
+  $: console.log("visible month is", visibleMonth.month(), visibleMonth.year());
+
+
   let scrollToToday: () => void;
 
   $: if (calendarComponent) {
     onInit(calendarComponent);
   }
 
+  $: isActiveMonth = (() => {
+    if (!visibleMonth) return false;
+    const thisMonth = window.moment().day(0);
+    // Check if visible month is within one month of current date
+    const diffInMonths = visibleMonth.diff(thisMonth, 'months')
+    return diffInMonths >= 1 || diffInMonths < 0;
+  })();
+
 
 </script>
 
 <div class="main-view">
-  <Header {scrollToToday} {visibleYear}/>
+  <Header
+    {scrollToToday}
+    {visibleMonth}
+    active={isActiveMonth}
+  />
   <div class="calendar-section">
     <ScrollingCalendar
       bind:this={calendarComponent}
-      bind:visibleYear={visibleYear}
+      bind:visibleMonth={visibleMonth}
       bind:scrollToToday={scrollToToday}
-      {...calendarProps}
+      {...calendarActions}
     />
   </div>
-  <OnThisDay
-    onClickDate={onClickDate}
-  />
+<!--  <ContextPanel-->
+<!--    openOrCreateNote={openOrCreateNote}-->
+<!--  />-->
+
 </div>

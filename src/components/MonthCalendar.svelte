@@ -25,14 +25,13 @@
     targetEl: EventTarget,
     isMetaPressed: boolean
   ) => boolean;
-  export let onContextMenuDay: (date: Moment, event: MouseEvent) => boolean;
-  export let onContextMenuWeek: (date: Moment, event: MouseEvent) => boolean;
+  export let onFileMenuDay: (date: Moment, event: MouseEvent) => boolean;
   export let onClickDay: (date: Moment, isMetaPressed: boolean) => boolean;
-  export let onClickWeek: (date: Moment, isMetaPressed: boolean) => boolean;
 
   // External sources (All optional)
   export let sources: ICalendarSource[] = [];
-  export let selectedId: string;
+  // export let selectedId: string;
+  export let selectedDate: Moment | null;
 
 
   // Override-able local state
@@ -100,10 +99,9 @@
               today="{today}"
               displayedMonth="{displayedMonth}"
               onClick="{onClickDay}"
-              onContextMenu="{onContextMenuDay}"
+              onFileMenu="{onFileMenuDay}"
               onHover="{onHoverDay}"
               metadata="{getDailyMetadata(sources, day, today)}"
-              selectedId="{selectedId}"
             />
           {/each}
         </tr>

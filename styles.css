@@ -10,14 +10,16 @@
   margin: 0;
 }
 
-.month-container {
-  --color-background-heading: transparent;
-
+body {
   --hue-60: calc(var(--accent-h) + 60);
   --hue-ternary-one: calc(var(--accent-h) + 120);
   --hue-opposite: calc(var(--accent-h) + 180);
   --hue-ternary-two: calc(var(--accent-h) + 240);
   --hue-300: calc(var(--accent-h) + 300);
+}
+
+.month-container {
+  --color-background-heading: transparent;
 
 
   --color-background-day: var(--interactive-normal);

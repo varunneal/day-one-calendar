@@ -2,8 +2,12 @@
 <script lang="ts">
   import type { Moment } from "moment";
   import moment from "moment";
-  import { getDailyNote } from "obsidian-daily-notes-interface";
-  import { activeFile, dailyNotes, weeklyNotes } from "../ui/stores";
+  import { activeFile, dailyNotes, selectedDate } from "../ui/stores";
+  import {
+    getDailyNote,
+    getDailyNoteSettings,
+    getDateFromFile,
+  } from "obsidian-daily-notes-interface";
 
   export let onClickDate: (date: Moment) => boolean;
 
@@ -13,18 +17,8 @@
     name: string;
   }
 
-
-  function parseUUIDToMoment(uuid: string): Moment | null {
-    if (!uuid) return null;
-    const match = uuid.match(/day-(.+)/);
-    if (!match) return null;
-
-    const dateString = match[1];
-    return moment(dateString);
-  }
-
-  $: historicalNotes = getHistoricalNotes(parseUUIDToMoment($activeFile));
-
+  // We'll now get historical notes based on selectedDate
+  $: historicalNotes = getHistoricalNotes($selectedDate);
 
   function getHistoricalNotes(date: Moment | null): HistoricalNote[] {
     if (!date) return [];
@@ -38,10 +32,7 @@
     for (let year = currentYear - 60; year <= currentYear + 60; year++) {
       const historicalDate = window.moment().year(year).month(month).date(day);
       const file = getDailyNote(historicalDate, $dailyNotes);
-
       if (file) {
-        // console.log("file contents:");
-        // console.dir(file);
         notes.push({
           date: historicalDate,
           name: file.basename,
@@ -49,9 +40,11 @@
         });
       }
     }
-
     return notes;
   }
+
+  // Debug logging for store changes
+  $: console.log('selectedDate in historical notes:', $selectedDate ? $selectedDate.format('YYYY-MM-DD') : 'none');
 </script>
 
 {#if historicalNotes && historicalNotes.length > 0}
@@ -73,7 +66,6 @@
     </ul>
   </div>
 {/if}
-
 
 <style>
     .on-this-day {
