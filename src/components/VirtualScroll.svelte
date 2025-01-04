@@ -67,8 +67,9 @@
   export function scrollToIndex(index, behavior='smooth') {
     if (!container) return;
 
+
     container.scrollTo({
-      top: index * height,
+      top: Math.max(index * height, 0.5),
       behavior: behavior
     });
   }

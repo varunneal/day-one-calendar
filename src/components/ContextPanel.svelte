@@ -22,7 +22,6 @@
   $: if (currentNote) {
     if ($activeFile.uid === getDateUIDFromFile(currentNote)) {
       content = $activeFile.content;
-      console.log("active file content is", content);
     } else {
       loadNoteContent && loadNoteContent(currentNote).then((c) => {
         content = c;
@@ -77,14 +76,17 @@
     }
 
     .current-note:hover {
-        background: var(--interactive-hover);
-        border-color: var(--interactive-accent);
+        background-color: var(--interactive-hover);
+        /*background: var(--interactive-hover);*/
+        /*border-color: var(--interactive-accent);*/
     }
 
     .current-note:active {
-        background: var(--interactive-accent);
-        color: var(--text-on-accent);
-        transform: translateY(1px);
+        background: var(--interactive-normal);
+        border: 1px solid var(--color-base-70);
+        /*background: var(--interactive-accent);*/
+        /*color: var(--text-on-accent);*/
+        /*transform: translateY(1px);*/
     }
 
     .note-content {
@@ -122,19 +124,18 @@
     .current-note:not(:has(.note-content)) {
         background: var(--interactive-normal);
         border: 1px solid transparent;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .current-note:not(:has(.note-content)):hover {
         background: var(--interactive-hover);
-        border-color: var(--interactive-accent);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        /*border-color: var(--interactive-accent);*/
+
     }
 
     .current-note:not(:has(.note-content)):active {
-        background: var(--interactive-accent);
-        color: var(--text-on-accent);
-        transform: translateY(1px);
-        box-shadow: none;
+        /*background: var(--interactive-accent);*/
+        /*color: var(--text-on-accent);*/
+        background: var(--interactive-normal);
+        border: 1px solid var(--color-base-70);
     }
 </style>

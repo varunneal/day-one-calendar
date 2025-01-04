@@ -73,9 +73,6 @@
 
   <table class="calendar">
     <colgroup>
-      {#if showWeekNums}
-        <col />
-      {/if}
       {#each month[1].days as date}
         <col class:weekend="{isWeekend(date)}" />
       {/each}

@@ -33,6 +33,7 @@ This plugin is _not_ built to be compatible with any other calendar or journalin
 I recommend you disable or uninstall any before testing this plugin. 
 
 
+
 ### Daily Note Name and Location
 
 The name for Daily Notes is specified in the settings for your Daily Note. 
@@ -42,19 +43,36 @@ For reference, my date format looks like this: `YYYY/MMMM/MMM-D-YYYY`.
 
 ## Customization
 
-You can overwrite anything in `styles.css` in your `obsidian.css` file.
+I can't guarantee every accent color/light mode will look great.
+
+You can overwrite anything in `styles.css` in your `obsidian.css` file. Below are some defaults you may want to overwrite:
 
 ```css
 /* day-one-calendar-plugin */
 
 #calendar-container {
     --color-background-day: var(--interactive-normal);
+    --color-background-day-hover: var(--interactive-normal-hover);
+
+    --color-text-day: var(--text-normal);
+    --color-text-day-hover: var(--text-normal);
+
+    --color-background-day-note: var(--accent);
+    --color-background-day-note-hover: var(--accent-light);
+
+    --color-text-has-note: var(--text-on-accent);
+    --color-text-has-note-hover: var(--text-on-accent);
+
+    --color-today-dot: var(--color-base-100);
+
+    --color-border-day-active: var(--color-orange);
+    --color-border-day-hover: rgba(var(--color-orange-rgb), 0.8);
 }
 ```
 
+[Obsidian CSS color vars](https://docs.obsidian.md/Reference/CSS+variables/Foundations/Colors#Extended+colors) for reference.
 
-> **Note:** It's especially important when overriding the classes to prefix them with `#calendar-container` to avoid any unexpected changes within Obsidian!
-
+> **Note:** Prefix vars/classes with `#calendar-container` to avoid any unexpected changes within Obsidian!
 
 
 ## To Do

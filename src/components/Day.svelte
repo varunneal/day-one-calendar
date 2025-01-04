@@ -70,41 +70,36 @@
     .day:hover {
         background-color: var(--color-background-day-hover);
         color: var(--color-text-day-hover);
-        border: 2px solid var(--background-modifier-border-hover);
+        border: 2px solid var(--color-border-day-hover);
     }
 
     .day.has-note {
         background-color: var(--color-background-day-note);
-        color: var(--color-text-day-note);
+        color: var(--color-text-has-note);
     }
 
-    .day.selected {
-        /*color: var(--color-text-day-note);*/
-        border: 2px solid var(--color-border-day-active);
-    }
 
     .day.has-note:hover {
         background-color: var(--color-background-day-note-hover);
-        color: var(--color-text-day-note-hover);
+        color: var(--color-text-has-note-hover);
     }
 
-
-    /* Today state - different text color */
-    .day.today {
-        /*color: var(--color-text-day-today);*/
-        border: 2px solid var(--color-base-100);
-        /*outline-offset: -3px;*/
-        /*border-radius: 25%;*/
-        font-weight: bold;
-    }
-    .day.today.selected {
-        /*color: var(--color-text-day-today-note);*/
+    .day.selected {
         border: 2px solid var(--color-border-day-active);
     }
 
-    .day.today:hover {
-        color: var(--color-text-day-today-hover);
+    .day.today::after {
+        content: '';
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 3px;
+        height: 3px;
+        background: var(--color-text-day);
+        border-radius: 50%;
     }
+
 
 
     .inactive-month {

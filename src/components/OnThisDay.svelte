@@ -74,7 +74,7 @@
 <style>
     .on-this-day {
         padding: 1rem;
-        border-top: 1px solid var(--background-modifier-border);
+        /*border-top: 1px solid var(--background-modifier-border);*/
     }
 
     .on-this-day-header {

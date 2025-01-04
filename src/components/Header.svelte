@@ -35,19 +35,22 @@
         border-radius: 15%;
         font-size: 1.0em;
         font-weight: 200;
-        border: none;
         cursor: pointer;
         border: 1px solid transparent;
         transition: all 0.05s ease;
         background: var(--background-secondary);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     }
+
     .today-button.active {
         background: var(--interactive-normal);
-        border: 1px solid var(--color-base-70);
+        border-color: var(--color-base-50);
     }
+
     .today-button:hover {
         background-color: var(--interactive-hover);
-
         transition: all 0.2s ease;
     }
+
+
 </style>
