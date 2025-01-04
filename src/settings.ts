@@ -153,7 +153,7 @@ export class CalendarSettingsTab extends PluginSettingTab {
 
   addOpenInNewTabSetting(): void {
     new Setting(this.containerEl)
-      .setName("Open note in new tab.")
+      .setName("Open notes in a new tab")
       .addToggle((toggle) => {
         toggle.setValue(this.plugin.options.openInNewTab);
         toggle.onChange(async (value) => {
@@ -168,7 +168,7 @@ export class CalendarSettingsTab extends PluginSettingTab {
   addConfirmCreateSetting(): void {
     new Setting(this.containerEl)
       .setName("Confirm before creating new note")
-      .setDesc("Show a confirmation modal before creating a new note")
+      // .setDesc("Show a confirmation modal before creating a new note")
       .addToggle((toggle) => {
         toggle.setValue(this.plugin.options.shouldConfirmBeforeCreate);
         toggle.onChange(async (value) => {
