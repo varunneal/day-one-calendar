@@ -17,35 +17,39 @@
     name: string;
   }
 
-  // We'll now get historical notes based on selectedDate
-  $: historicalNotes = getHistoricalNotes($selectedDate);
+  // derived store to force reactivity
+  $: noteKey = $selectedDate ?
+    `${$selectedDate.format('YYYY-MM-DD')}-${Object.keys($dailyNotes).length}` :
+    null;
 
-  function getHistoricalNotes(date: Moment | null): HistoricalNote[] {
-    if (!date) return [];
+  $: historicalNotes = noteKey ? getHistoricalNotes($selectedDate) : [];
 
-    const notes: HistoricalNote[] = [];
-    const currentYear = date.year();
-    const month = date.month();
-    const day = date.date();
+  function getHistoricalNotes(selectedDate: Moment | null): HistoricalNote[] {
+    if (!selectedDate) return [];
 
-    // todo: make less derpy
-    for (let year = currentYear - 60; year <= currentYear + 60; year++) {
-      const historicalDate = window.moment().year(year).month(month).date(day);
-      const file = getDailyNote(historicalDate, $dailyNotes);
-      if (file) {
-        notes.push({
-          date: historicalDate,
-          name: file.basename,
-          exists: true
-        });
-      }
-    }
-    return notes;
+    const month = selectedDate.month();
+    const day = selectedDate.date();
+
+    // Get all dates from dailyNotes that match the month and day
+    return Object.entries($dailyNotes)
+      .map(([dateStr, file]): HistoricalNote | null => {
+        const date = moment(dateStr, "YYYY-MM-DD");
+
+        // Check if this note's month and day match our selected date
+        if (date.month() === month && date.date() === day) {
+          return {
+            date: date,
+            name: file.basename,
+            exists: true
+          };
+        }
+        return null;
+      })
+      .filter((note): note is HistoricalNote => note !== null)
+      .sort((a, b) => a.date.valueOf() - b.date.valueOf());
   }
-
-  // Debug logging for store changes
-  $: console.log('selectedDate in historical notes:', $selectedDate ? $selectedDate.format('YYYY-MM-DD') : 'none');
 </script>
+
 
 {#if historicalNotes && historicalNotes.length > 0}
   <div class="on-this-day">
@@ -53,7 +57,7 @@
       On this day ({historicalNotes.length} {historicalNotes.length === 1 ? 'entry' : 'entries'})
     </h3>
     <ul class="on-this-day-list">
-      {#each historicalNotes as note}
+      {#each historicalNotes as note (note.date.valueOf())}
         <li>
          <span
            class="internal-link clickable-link"

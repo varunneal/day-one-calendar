@@ -1,3 +1,14 @@
+body {
+  --hue-60: calc(var(--accent-h) + 60);
+  --hue-ternary-one: calc(var(--accent-h) + 120);
+  --hue-opposite: calc(var(--accent-h) + 180);
+  --hue-ternary-two: calc(var(--accent-h) + 240);
+  --hue-300: calc(var(--accent-h) + 300);
+
+  --accent: var(--interactive-accent);
+  --accent-light: var(--interactive-accent-hover);
+}
+
 .settings-banner {
   background-color: var(--background-secondary-alt);
   border-radius: 4px;
@@ -10,13 +21,7 @@
   margin: 0;
 }
 
-body {
-  --hue-60: calc(var(--accent-h) + 60);
-  --hue-ternary-one: calc(var(--accent-h) + 120);
-  --hue-opposite: calc(var(--accent-h) + 180);
-  --hue-ternary-two: calc(var(--accent-h) + 240);
-  --hue-300: calc(var(--accent-h) + 300);
-}
+
 
 .month-container {
   --color-background-heading: transparent;
@@ -121,10 +126,17 @@ th {
   z-index: 10;
 }
 
+
+.loading-bar.bottom {
+  top: auto;
+  bottom: 0;
+}
+
+
 .loading-bar-inner {
   height: 100%;
   background: var(--interactive-accent);
-  animation: loading 0.5s ease-in-out;
+  animation: loading 0.25s ease-in-out;
 }
 
 @keyframes loading {
@@ -149,7 +161,7 @@ th {
 }
 
 .calendar-section {
-  height: 65%;
+  /*height: %;*/
   min-height: 300px;
   border-bottom: 2px solid var(--background-modifier-border);
 }

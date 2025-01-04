@@ -10,6 +10,7 @@ export interface ISettings {
   wordsPerDot: number;
   weekStart: IWeekStartOption;
   shouldConfirmBeforeCreate: boolean;
+  openInNewTab: boolean;
 
   // Weekly Note settings
   showWeeklyNote: boolean;
@@ -31,7 +32,8 @@ const weekdays = [
 ];
 
 export const defaultSettings = Object.freeze({
-  shouldConfirmBeforeCreate: true,
+  shouldConfirmBeforeCreate: false,
+  openInNewTab: true,
   weekStart: "locale" as IWeekStartOption,
 
   wordsPerDot: DEFAULT_WORDS_PER_DOT,
@@ -79,25 +81,26 @@ export class CalendarSettingsTab extends PluginSettingTab {
     });
     // this.addDotThresholdSetting();
     // this.addWeekStartSetting();
+    this.addOpenInNewTabSetting();
     this.addConfirmCreateSetting();
     // this.addShowWeeklyNoteSetting();
 
-    if (
-      this.plugin.options.showWeeklyNote &&
-      !appHasPeriodicNotesPluginLoaded()
-    ) {
-      this.containerEl.createEl("h3", {
-        text: "Weekly Note Settings",
-      });
-      this.containerEl.createEl("p", {
-        cls: "setting-item-description",
-        text:
-          "Note: Weekly Note settings are moving. You are encouraged to install the 'Periodic Notes' plugin to keep the functionality in the future.",
-      });
-      this.addWeeklyNoteFormatSetting();
-      this.addWeeklyNoteTemplateSetting();
-      this.addWeeklyNoteFolderSetting();
-    }
+    // if (
+    //   this.plugin.options.showWeeklyNote &&
+    //   !appHasPeriodicNotesPluginLoaded()
+    // ) {
+    //   this.containerEl.createEl("h3", {
+    //     text: "Weekly Note Settings",
+    //   });
+    //   this.containerEl.createEl("p", {
+    //     cls: "setting-item-description",
+    //     text:
+    //       "Note: Weekly Note settings are moving. You are encouraged to install the 'Periodic Notes' plugin to keep the functionality in the future.",
+    //   });
+    //   this.addWeeklyNoteFormatSetting();
+    //   this.addWeeklyNoteTemplateSetting();
+    //   this.addWeeklyNoteFolderSetting();
+    // }
 
     this.containerEl.createEl("h3", {
       text: "Advanced Settings",
@@ -146,6 +149,21 @@ export class CalendarSettingsTab extends PluginSettingTab {
         });
       });
   }
+
+
+  addOpenInNewTabSetting(): void {
+    new Setting(this.containerEl)
+      .setName("Open note in new tab.")
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.options.openInNewTab);
+        toggle.onChange(async (value) => {
+          this.plugin.writeOptions(() => ({
+            openInNewTab: value,
+          }));
+        });
+      });
+  }
+
 
   addConfirmCreateSetting(): void {
     new Setting(this.containerEl)

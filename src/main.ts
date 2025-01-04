@@ -42,8 +42,8 @@ export default class CalendarPlugin extends Plugin {
     );
 
     this.addCommand({
-      id: "show-calendar-view",
-      name: "Open view",
+      id: "open-calendar-view",
+      name: "Open calendar",
       checkCallback: (checking: boolean) => {
         if (checking) {
           return (
@@ -54,16 +54,16 @@ export default class CalendarPlugin extends Plugin {
       },
     });
 
-    this.addCommand({
-      id: "open-weekly-note",
-      name: "Open Weekly Note",
-      checkCallback: (checking) => {
-        if (checking) {
-          return !appHasPeriodicNotesPluginLoaded();
-        }
-        this.view.openOrCreateWeeklyNote(window.moment(), false);
-      },
-    });
+    // this.addCommand({
+    //   id: "open-weekly-note",
+    //   name: "Open Weekly Note",
+    //   checkCallback: (checking) => {
+    //     if (checking) {
+    //       return !appHasPeriodicNotesPluginLoaded();
+    //     }
+    //     this.view.openOrCreateWeeklyNote(window.moment(), false);
+    //   },
+    // });
 
     this.addCommand({
       id: "reveal-active-note",

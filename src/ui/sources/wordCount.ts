@@ -6,7 +6,7 @@ import { get } from "svelte/store";
 
 import { DEFAULT_WORDS_PER_DOT } from "src/constants";
 
-import { dailyNotes, settings, weeklyNotes } from "../stores";
+import { dailyNotes, settings } from "../stores";
 import { clamp, getWordCount } from "../utils";
 
 const NUM_MAX_DOTS = 5;
@@ -50,12 +50,4 @@ export const wordCountSource: ICalendarSource = {
     };
   },
 
-  getWeeklyMetadata: async (date: Moment): Promise<IDayMetadata> => {
-    const file = getWeeklyNote(date, get(weeklyNotes));
-    const dots = await getDotsForDailyNote(file);
-
-    return {
-      dots,
-    };
-  },
 };

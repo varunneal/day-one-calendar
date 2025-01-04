@@ -3,7 +3,7 @@ import {
   getAllDailyNotes,
   getAllWeeklyNotes,
 } from "obsidian-daily-notes-interface";
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 
 import { defaultSettings, ISettings } from "src/settings";
 
@@ -54,17 +54,23 @@ function createWeeklyNotesStore() {
   };
 }
 
-function createSelectedFileStore() {
-  const store = writable<string>(null);
+function createActiveFileStore() {
+  const store = writable<{ uid: string | null; content: string }>({
+    uid: null,
+    content: "",
+  });
 
   return {
-    setFile: (file: TFile) => {
+    setFile: (file: TFile, content = "") => {
       const id = getDateUIDFromFile(file);
-      store.set(id);
+      store.set({uid: id, content});
     },
+    setContent: (content: string) =>
+      store.update((state) => ({ ...state, content })),
     ...store,
   };
 }
+
 
 function createSelectedDateStore() {
   const store = writable<Moment | null>(null);
@@ -78,8 +84,10 @@ function createSelectedDateStore() {
   };
 }
 
+
+
+
 export const selectedDate = createSelectedDateStore();
 export const settings = writable<ISettings>(defaultSettings);
 export const dailyNotes = createDailyNotesStore();
-export const weeklyNotes = createWeeklyNotesStore();
-export const activeFile = createSelectedFileStore();
+export const activeFile = createActiveFileStore();

@@ -31,13 +31,18 @@
     if (!container) return;
 
     const scrollTop = container.scrollTop;
+    const scrollHeight = container.scrollHeight;
+    const clientHeight = container.clientHeight;
 
-    // Dispatch scrolltop event when scrolled to top
     if (scrollTop === 0) {
       dispatch('scrolltop');
     }
 
-    // Calculate visible range
+    if (scrollTop + clientHeight >= scrollHeight) {
+      dispatch('scrollbottom');
+    }
+
+
     let startIndex = Math.floor(scrollTop / height) - buffer;
     startIndex = Math.max(0, startIndex);
 
@@ -58,20 +63,21 @@
   /**
    * Public method to scroll to a specific index
    * @param {number} index - Index to scroll to
+   * @param {string} behavior - Scroll behavior
    */
-  export function scrollToIndex(index) {
+  export function scrollToIndex(index, behavior='smooth') {
     if (!container) return;
 
     container.scrollTo({
       top: index * height,
-      behavior: 'smooth'
+      behavior: behavior
     });
   }
 
 
   export interface VirtualScrollMethods {
     visibleIndex: number;
-    scrollToIndex(index: number): void;
+    scrollToIndex(index: number, behavior?: string): void;
   }
 
   onMount(() => {

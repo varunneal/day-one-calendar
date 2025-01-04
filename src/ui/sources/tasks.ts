@@ -4,7 +4,7 @@ import type { ICalendarSource, IDayMetadata, IDot } from "../../types";
 import { getDailyNote, getWeeklyNote } from "obsidian-daily-notes-interface";
 import { get } from "svelte/store";
 
-import { dailyNotes, weeklyNotes } from "../stores";
+import { dailyNotes } from "../stores";
 
 export async function getNumberOfRemainingTasks(note: TFile): Promise<number> {
   if (!note) {
@@ -44,12 +44,4 @@ export const tasksSource: ICalendarSource = {
     };
   },
 
-  getWeeklyMetadata: async (date: Moment): Promise<IDayMetadata> => {
-    const file = getWeeklyNote(date, get(weeklyNotes));
-    const dots = await getDotsForDailyNote(file);
-
-    return {
-      dots,
-    };
-  },
 };

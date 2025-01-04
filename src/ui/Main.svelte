@@ -5,8 +5,8 @@
   import Header from "../components/Header.svelte";
   import OnThisDay from "../components/OnThisDay.svelte";
   import { ICalendarSource } from "../types";
-  import { activeFile, selectedDate } from "./stores";
   import ContextPanel from "../components/ContextPanel.svelte";
+  import type { TFile } from "obsidian";
 
 
   // Props to be passed from View
@@ -18,18 +18,14 @@
   };
 
   export let openOrCreateNote: (date: Moment, isMetaPressed: boolean) => boolean;
+  export let loadNoteContent: (note: TFile | null) => Promise<string>;
 
-
-  $: console.log('selectedDate changed:', $selectedDate);
   export let onInit: (calendar: ScrollingCalendar) => void;
 
 
   let calendarComponent: ScrollingCalendar;
 
-  // todo: change to moment, will allow for active control
   export let visibleMonth: Moment = window.moment();
-
-  $: console.log("visible month is", visibleMonth.month(), visibleMonth.year());
 
 
   let scrollToToday: () => void;
@@ -63,8 +59,9 @@
       {...calendarActions}
     />
   </div>
-<!--  <ContextPanel-->
-<!--    openOrCreateNote={openOrCreateNote}-->
-<!--  />-->
+  <ContextPanel
+    {openOrCreateNote}
+    {loadNoteContent}
+  />
 
 </div>

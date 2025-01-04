@@ -1,8 +1,8 @@
 {
-  "id": "calendar",
-  "name": "Better Calendar",
-  "description": "Calendar view of your daily notes",
-  "version": "2.0",
+  "id": "day-one-calendar",
+  "name": "Day One Calendar",
+  "description": "Calendar with scrolling functionality and other rich features, stylized after the Day One journaling app.",
+  "version": "1.0",
   "author": "Varun Neal Srivastava",
   "authorUrl": "https://github.com/varunneal/",
   "isDesktopOnly": true,

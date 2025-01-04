@@ -30,26 +30,24 @@
         font-size: 1.8em;
         font-weight: 600;
     }
-
     .today-button {
-        padding: 0.25rem 0.6rem; /* Reduced padding */
+        padding: 0.25rem 0.6rem;
         border-radius: 15%;
         font-size: 1.0em;
         font-weight: 200;
-        /*border: 1px solid orange;*/
-        /*color: var(--text-on-accent);*/
-        border: 2px solid transparent;
+        border: none;
         cursor: pointer;
-        /*background-color: var(--background-secondary);*/
+        border: 1px solid transparent;
+        transition: all 0.05s ease;
+        background: var(--background-secondary);
     }
     .today-button.active {
-        /*background-color: var(--interactive-accent);*/
         background: var(--interactive-normal);
-        border: 2px solid white;
-        opacity: 0.8;  /* Maintains some of that glassy feel */
-        font-weight: 300;  /* Slightly bolder than normal state */
+        border: 1px solid var(--color-base-70);
     }
     .today-button:hover {
         background-color: var(--interactive-hover);
+
+        transition: all 0.2s ease;
     }
 </style>

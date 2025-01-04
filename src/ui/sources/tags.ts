@@ -6,7 +6,7 @@ import { get } from "svelte/store";
 
 import { partition } from "src/ui/utils";
 
-import { dailyNotes, weeklyNotes } from "../stores";
+import { dailyNotes } from "../stores";
 
 function getNoteTags(note: TFile | null): string[] {
   if (!note) {
@@ -55,11 +55,5 @@ export const customTagsSource: ICalendarSource = {
       dots: [],
     };
   },
-  getWeeklyMetadata: async (date: Moment): Promise<IDayMetadata> => {
-    const file = getWeeklyNote(date, get(weeklyNotes));
-    return {
-      dataAttributes: getFormattedTagAttributes(file),
-      dots: [],
-    };
-  },
+
 };
