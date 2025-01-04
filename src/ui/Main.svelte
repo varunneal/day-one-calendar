@@ -37,9 +37,9 @@
   $: isActiveMonth = (() => {
     if (!visibleMonth) return false;
     const thisMonth = window.moment().day(0);
-    // Check if visible month is within one month of current date
-    const diffInMonths = visibleMonth.diff(thisMonth, 'months')
-    return diffInMonths >= 1 || diffInMonths < 0;
+
+    const diffInDays = visibleMonth.diff(thisMonth, 'months');
+    return diffInDays >= 1 || diffInDays < -0;
   })();
 
 

@@ -1,7 +1,7 @@
 import type { Moment } from "moment";
 import { parseFrontMatterTags, TFile } from "obsidian";
 import type { ICalendarSource, IDayMetadata } from "../../types";
-import { getDailyNote, getWeeklyNote } from "obsidian-daily-notes-interface";
+import { getDailyNote } from "obsidian-daily-notes-interface";
 import { get } from "svelte/store";
 
 import { partition } from "src/ui/utils";

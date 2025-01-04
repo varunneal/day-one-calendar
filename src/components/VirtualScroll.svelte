@@ -42,7 +42,6 @@
       dispatch('scrollbottom');
     }
 
-
     let startIndex = Math.floor(scrollTop / height) - buffer;
     startIndex = Math.max(0, startIndex);
 
@@ -83,7 +82,6 @@
   onMount(() => {
     // Defer scroll to next frame to ensure DOM is ready
     requestAnimationFrame(() => {
-      console.log("request animation frame called");
       scrollToIndex(start);
     });
   });

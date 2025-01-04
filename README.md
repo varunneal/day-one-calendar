@@ -12,9 +12,11 @@ This plugin is not yet an obsidian community plugin. Install manually:
 
 Install [Bun](https://bun.sh/docs/installation).
 
+Navigate to your vault's plugin folder, e.g. `vault/.obsidian/plugins`. Then,
+
 ```bash
 
-bun create <user>/<repo>
+bun create varunneal/day-one-calendar
 
 bun run build
 
@@ -25,7 +27,7 @@ bun run build
 
 After installing and enabling this plugin, the calendar view will be on the right side panel. 
 
-If you close it, you can open the calendar at any time via the Command Palette.
+If you close it, you can re-open the calendar via the Command Palette ("Open calendar"). 
 
 This plugin is _not_ built to be compatible with any other calendar or journaling plugins. 
 I recommend you disable or uninstall any before testing this plugin. 
@@ -56,4 +58,11 @@ You can overwrite anything in `styles.css` in your `obsidian.css` file.
 
 
 ## To Do
+
+- [ ] Two-column layout for opening the calendar view in a full tab
+- [ ] Code cleanup (consistent style sheets, TS compile warnings, etc.)
+- [ ] Better dynamic sizing (fonts, px -> rem, etc.)
+- [ ] More link-hover and file menu (right click window) support
+- [ ] Arrow keys for navigation
+- [ ] Consistent UI philosophy for buttons, selecting, hovering. 
 

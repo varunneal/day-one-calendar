@@ -70,6 +70,7 @@
     .day:hover {
         background-color: var(--color-background-day-hover);
         color: var(--color-text-day-hover);
+        border: 2px solid var(--background-modifier-border-hover);
     }
 
     .day.has-note {

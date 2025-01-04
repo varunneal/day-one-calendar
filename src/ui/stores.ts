@@ -1,9 +1,8 @@
 import type { TFile } from "obsidian";
 import {
   getAllDailyNotes,
-  getAllWeeklyNotes,
 } from "obsidian-daily-notes-interface";
-import { get, writable } from "svelte/store";
+import { writable } from "svelte/store";
 
 import { defaultSettings, ISettings } from "src/settings";
 
@@ -22,7 +21,7 @@ function createDailyNotesStore() {
       } catch (err) {
         if (!hasError) {
           // Avoid error being shown multiple times
-          console.log("[Calendar] Failed to find daily notes folder", err);
+          console.error("[Calendar] Failed to find daily notes folder", err);
         }
         store.set({});
         hasError = true;
@@ -32,27 +31,27 @@ function createDailyNotesStore() {
   };
 }
 
-function createWeeklyNotesStore() {
-  let hasError = false;
-  const store = writable<Record<string, TFile>>(null);
-  return {
-    reindex: () => {
-      try {
-        const weeklyNotes = getAllWeeklyNotes();
-        store.set(weeklyNotes);
-        hasError = false;
-      } catch (err) {
-        if (!hasError) {
-          // Avoid error being shown multiple times
-          console.log("[Calendar] Failed to find weekly notes folder", err);
-        }
-        store.set({});
-        hasError = true;
-      }
-    },
-    ...store,
-  };
-}
+// function createWeeklyNotesStore() {
+//   let hasError = false;
+//   const store = writable<Record<string, TFile>>(null);
+//   return {
+//     reindex: () => {
+//       try {
+//         const weeklyNotes = getAllWeeklyNotes();
+//         store.set(weeklyNotes);
+//         hasError = false;
+//       } catch (err) {
+//         if (!hasError) {
+//           // Avoid error being shown multiple times
+//           console.error("[Calendar] Failed to find weekly notes folder", err);
+//         }
+//         store.set({});
+//         hasError = true;
+//       }
+//     },
+//     ...store,
+//   };
+// }
 
 function createActiveFileStore() {
   const store = writable<{ uid: string | null; content: string }>({

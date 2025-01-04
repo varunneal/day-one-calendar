@@ -5,6 +5,9 @@ body {
   --hue-ternary-two: calc(var(--accent-h) + 240);
   --hue-300: calc(var(--accent-h) + 300);
 
+  --hue-split-one: calc(var(--accent-h) + 150);
+  --hue-split-two: calc(var(--accent-h) + 210);
+
   --accent: var(--interactive-accent);
   --accent-light: var(--interactive-accent-hover);
 }
@@ -37,18 +40,14 @@ body {
   --color-background-day-note-hover: var(--interactive-accent-hover);
 
   --color-text-day-note: var(--text-on-accent);
-  --color-text-day-note-hover: var(--text-accent-hover); /* might need correction */
+  --color-text-day-note-hover: var(--text-normal); /* might need correction */
 
   --color-text-day-today:  var(--text-accent);
-  --color-text-day-today-hover: var(--text-accent-hover);
+  --color-text-day-today-hover: var(--text-normal);
   --color-text-day-today-note: var(--text-on-accent);
 
-  --color-border-day-active: hsl(var(--hue-ternary-one), var(--accent-s), var(--accent-l));
+  --color-border-day-active: hsl(var(--hue-split-one), var(--accent-s), var(--accent-l));
 
-  --color-dot: var(--text-muted);
-  --color-arrow: var(--text-muted);
-  --color-button: var(--text-muted);
-  --color-underline: hsl(var(--hue-ternary-two), var(--accent-s), var(--accent-l));
 
   --color-text-title: var(--text-normal);
   --color-text-heading: var(--text-muted);

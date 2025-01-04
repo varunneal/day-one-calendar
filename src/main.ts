@@ -5,7 +5,6 @@ import { App, Plugin, WorkspaceLeaf } from "obsidian";
 import { VIEW_TYPE_CALENDAR } from "./constants";
 import { settings } from "./ui/stores";
 import {
-  appHasPeriodicNotesPluginLoaded,
   CalendarSettingsTab,
   ISettings,
 } from "./settings";

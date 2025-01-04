@@ -115,6 +115,7 @@ export default class CalendarView extends ItemView {
     this.app.workspace.trigger(TRIGGER_ON_OPEN, sources);
 
     this.main = new Main({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       target: (this as any).contentEl,
       props: {
         calendarActions: {
@@ -326,6 +327,7 @@ export default class CalendarView extends ItemView {
     } else if (getDateUIDFromFile(existingFile) == get(activeFile).uid) {
       return;
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const viewState = (this.app.vault as any).getConfig("defaultViewMode");
     const leaf = await workspace.getLeaf(inNewSplit);
     await leaf.openFile(existingFile, {
