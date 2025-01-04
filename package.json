@@ -9,8 +9,7 @@
     "lint": "svelte-check && eslint . --ext .ts",
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "test": "jest --passWithNoTests",
-    "test:watch": "yarn test -- --watch"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "lodash": "^4.17.21",

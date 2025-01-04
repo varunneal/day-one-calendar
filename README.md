@@ -59,6 +59,7 @@ You can overwrite anything in `styles.css` in your `obsidian.css` file.
 
 ## To Do
 
+- [] Tests
 - [ ] Two-column layout for opening the calendar view in a full tab
 - [ ] Code cleanup (consistent style sheets, TS compile warnings, etc.)
 - [ ] Better dynamic sizing (fonts, px -> rem, etc.)
