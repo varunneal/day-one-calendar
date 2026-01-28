@@ -251,7 +251,11 @@ export default class CalendarView extends ItemView {
     const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
     const file = markdownView?.file || null;
 
-    this.app.vault.cachedRead(file).then( c => activeFile.setFile(file, c));
+    if (file) {
+      this.app.vault.cachedRead(file).then(c => activeFile.setFile(file, c));
+    } else {
+      activeFile.setFile(null);
+    }
 
     if (this.calendar) {
       this.calendar.tick();

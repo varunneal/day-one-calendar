@@ -63,6 +63,8 @@
         display: flex;
         flex-direction: column;
         min-height: 35%;
+        flex: 1;
+        overflow-y: auto;
         padding: 0.75rem;
     }
 
